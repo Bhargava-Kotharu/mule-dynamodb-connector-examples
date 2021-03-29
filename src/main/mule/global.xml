@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule
+	xmlns:dynamodb="http://www.mulesoft.org/schema/mule/dynamodb"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/dynamodb http://www.mulesoft.org/schema/mule/dynamodb/current/mule-dynamodb.xsd">
+
+	<http:listener-config
+		name="mule-dynamodb-connector-examples-httpListenerConfig">
+		<http:listener-connection host="0.0.0.0"
+			port="8081" />
+	</http:listener-config>
+
+	<apikit:config
+		name="mule-dynamodb-connector-examples-config"
+		api="resource::8b6c9913-32e7-4db3-a102-02f2f0a4edb0:mule-dynamodb-connector-examples:1.0.0:raml:zip:mule-dynamodb-connector-examples.raml"
+		outboundHeadersMapName="outboundHeaders"
+		httpStatusVarName="httpStatus" />
+	<dynamodb:config name="Amazon_DynamoDB_Configuration" doc:name="Amazon DynamoDB Configuration" doc:id="5bb8f978-549c-48ec-b5de-52eaaf4121ba" >
+		<dynamodb:basic-connection sessionToken="sdafasdfsdfa" accessKey="assdfdsf" secretKey="sdfsadfsdf" />
+	</dynamodb:config>
+	<configuration-properties doc:name="Configuration properties" doc:id="13682f60-52ff-4e22-a361-d7f3ac9eb6e4" file="api.properties" />
+
+
+
+</mule>

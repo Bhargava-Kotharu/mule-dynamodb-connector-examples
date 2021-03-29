@@ -1,0 +1,60 @@
+#%RAML 1.0
+title: mule-dynamodb-connector-examples
+description: Mule Dynamodb Connector Examples
+version: v1
+protocols:
+  - HTTPS
+  - HTTP
+
+types:
+  employee: !include data-types/employee.raml
+  objectNotFound: !include data-types/notFound.raml
+
+/employees:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            type: employee[]         
+  post:
+    body:
+      application/json:
+        type: employee | employee[]
+    responses:
+      201:
+        body:
+          application/json:
+            type: employee | employee[]
+
+  /{employeeId}:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              type: employee
+        404:
+          body:
+            application/json:
+              type: objectNotFound
+    delete:
+      responses:
+        200:
+          body:
+            application/json:
+              type: employee
+        404:
+          body:
+            application/json:
+              type: objectNotFound
+    put:
+      responses:
+        200:
+          body:
+            application/json:
+              type: employee
+        404:
+          body:
+            application/json:
+              type: objectNotFound

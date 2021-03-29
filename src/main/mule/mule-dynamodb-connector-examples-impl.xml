@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:dynamodb="http://www.mulesoft.org/schema/mule/dynamodb"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
+http://www.mulesoft.org/schema/mule/dynamodb http://www.mulesoft.org/schema/mule/dynamodb/current/mule-dynamodb.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="get-employee"
+		doc:id="49461e12-48c1-47a9-8d99-520887072546">
+		<ee:transform doc:name="Request Transformation"
+			doc:id="68707230-e36a-48a1-a5c9-b8ceb7a8e350">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<dynamodb:get-item doc:name="Get Item" doc:id="46aed599-bd1d-479c-a915-c73ee73a6d27" config-ref="Amazon_DynamoDB_Configuration" tableName="employee"/>
+		<ee:transform doc:name="Response Transformation" doc:id="c2065788-9118-4b7d-a178-7bbd41b69549" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+   
+    
+		<flow name="get-employees" doc:id="04b19aaa-c07c-48e4-98b9-fc83c22cafa4" >
+		<ee:transform doc:name="Request Transformation" doc:id="34867a6f-f21f-4c81-b6a4-f7aaa0e7c0b3" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<dynamodb:batch-get-item doc:name="Batch get item" doc:id="10fb6d1d-dd7f-422a-a542-4f61359ffe22" config-ref="Amazon_DynamoDB_Configuration" requestItems="sdf"/>
+		<ee:transform doc:name="Response Transformation" doc:id="ef8000c9-e9b0-4496-98f0-1ededc97be1b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	
+		<flow name="post-employee" doc:id="a872e66f-59cf-4bd0-b332-5c113a3fbe5b" >
+		<choice doc:name="Choice" doc:id="0c722550-b858-449d-9a9b-6ef504e79b04" >
+			<when expression="#[sizeOf(payload) &gt; 1]">
+				<ee:transform doc:name="Request Transformation" doc:id="de88a3d0-5c0a-4858-9495-0d994f03e0be">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+				<dynamodb:batch-put-item doc:name="Batch put item" doc:id="1cf09035-1c3c-4a50-a217-58aebc8e5a34" config-ref="Amazon_DynamoDB_Configuration" requestPutItems="sfsdf" />
+				<ee:transform doc:name="Response Transformation" doc:id="36af05fe-80b5-4b14-8845-835de8cc9ac6">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+			</when>
+			<otherwise >
+				<ee:transform doc:name="Request Transformation" doc:id="4ab63add-1da8-4c50-b221-101a75465973">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+				<dynamodb:put-item doc:name="Put item" doc:id="68330b35-55da-456e-aa29-43183c90c903" config-ref="Amazon_DynamoDB_Configuration" tableName="sdfsfd" />
+				<ee:transform doc:name="Response Transformation" doc:id="b6bf8368-5e07-4d0f-9d32-4e0a20be5fcb">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+			</otherwise>
+		</choice>
+	</flow>
+	
+	
+		<flow name="delete-employee" doc:id="8807e2ee-65e2-460e-a881-240f5f634081" >
+		<ee:transform doc:name="Request Transformation" doc:id="3c893409-5869-42bc-a13c-c4bd25697289" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<dynamodb:delete-item doc:name="Delete item" doc:id="48d1a537-d658-427b-9db7-a837a1adeeb8" config-ref="Amazon_DynamoDB_Configuration" tableName="asd"/>
+		<ee:transform doc:name="Response Transformation" doc:id="647039b9-26b4-4ef3-83c4-12d9d24b6440" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	
+		<flow name="put-employee" doc:id="8f3a342b-5de9-424d-b6b7-589315f503bc" >
+		<ee:transform doc:name="Request Transformation" doc:id="bc5ce205-df4c-4627-9852-89b3c7a99cef" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<dynamodb:put-item doc:name="Put item" doc:id="5480fb9a-68a4-42d7-846b-c597d4c1d96c" config-ref="Amazon_DynamoDB_Configuration" tableName="sdf"/>
+		<ee:transform doc:name="Response Transformation" doc:id="9fb1e460-30d3-41eb-8f0f-3122187a803f" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
